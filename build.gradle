@@ -1,0 +1,42 @@
+group 'com.gradletest'
+version '1.1.5-RELEASE'
+def artifactId = "gradle040901"
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+
+
+repositories {
+    maven {
+        url codingArtifactsRepoUrl
+        credentials {
+            username = codingArtifactsGradleUsername
+            password = codingArtifactsGradlePassword
+        }
+    }
+
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "${codingArtifactsRepoUrl}") {
+                authentication(
+                        userName: "${codingArtifactsGradleUsername}",
+                        password: "${codingArtifactsGradlePassword}"
+                )
+            }
+            pom.version = "$project.version"
+            pom.artifactId = "$artifactId"
+            pom.groupId = "$project.group"
+        }
+    }
+}
+
+dependencies {
+    compile 'com.anran.test:testing:2.0.0.4-SNAPSHOT'
+    compile 'net.java.dev.eval:eval:0.5'
+}
